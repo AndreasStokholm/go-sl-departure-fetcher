@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"time"
 
@@ -108,14 +109,19 @@ func getDepartures() []MQTTDeparture {
 
 		for _, departure := range departures {
 
-			// TODO: Skip travel directions not specified in config.json
+			sort.Ints(site.Directions)
+			directionCount := sort.Search(len(site.Directions), func(directionCount int) bool {
+				return site.Directions[directionCount] >= departure.JourneyDirection
+			})
 
-			formattedDeparture := MQTTDeparture{
-				TransportMode:    departure.TransportMode,
-				TimeOfDeparture:  departure.DisplayTime,
-				JourneyDirection: departure.JourneyDirection,
+			if directionCount < len(site.Directions) && site.Directions[directionCount] == departure.JourneyDirection {
+				formattedDeparture := MQTTDeparture{
+					TransportMode:    departure.TransportMode,
+					TimeOfDeparture:  departure.DisplayTime,
+					JourneyDirection: departure.JourneyDirection,
+				}
+				departureMessage = append(departureMessage, formattedDeparture)
 			}
-			departureMessage = append(departureMessage, formattedDeparture)
 		}
 	}
 

@@ -1,0 +1,29 @@
+{
+  "departures": {
+    "api": {
+      "key": ""
+    },
+    "timewindow": 60,
+    "sites": [
+      {
+        "directions": [1,2],
+        "site_id": 1724,
+        "transport_mode": "Buses"
+      },
+      {
+        "directions": [1],
+        "site_id": 9263,
+        "transport_mode": "Metros"
+      }
+    ]
+  },
+
+  "mqtt": {
+    "host": "",
+    "user": "",
+    "password": "",
+    "client_id": "go-sl-status-fetcher",
+    "topic": "sl",
+    "status": "sl/status"
+  }
+}
